@@ -1,4 +1,4 @@
-package com.ffffauth.android
+package com.example.sondaggi_lunedi
 
 import io.flutter.embedding.android.FlutterActivity
 

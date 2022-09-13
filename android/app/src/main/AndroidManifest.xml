@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ffffauth.android">
+    package="com.example.sondaggi_lunedi">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="flutter_firebase_login"
+        android:label="sondaggi_lunedi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,53 +1,50 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'firebase_options.dart';
 import 'screen/home_screen.dart';
 import 'screen/login_screen.dart';
-import 'service/firebase_auth_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  runApp(MyApp());
+}
+
+enum Status {
+  Disconnected,
+  Connected,
+  Loading,
+  FailedLogin,
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  static ValueNotifier<Status> telegramStatus = ValueNotifier<Status>(Status.Disconnected);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuthService().authState,
-        builder: (context, snapshot) {
-          print('state: ${snapshot.connectionState}');
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.connectionState == ConnectionState.done ||
-              snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              return const HomeScreen();
-            } else {
-              return const LoginScreen();
-            }
-          } else {
-            return Center(
-              child: Text('State: ${snapshot.connectionState}'),
-            );
-          }
-        },
-      ),
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: Scaffold(
+            body: ValueListenableBuilder<Status>(
+              builder: (BuildContext context, Status status, Widget? child) {
+                print(telegramStatus.value);
+                print(status);
+                print('\n');
+                if (telegramStatus.value == Status.Loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (telegramStatus.value == Status.Connected) {
+                  return const HomeScreen();
+                } else {
+                  return const LoginScreen();
+                  //child: Text('State: ${snapshot.connectionState}'),
+                }
+              },
+              valueListenable: telegramStatus,
+            ),
+        )
     );
   }
 }

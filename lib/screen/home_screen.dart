@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../service/firebase_auth_service.dart';
+import 'login_screen.dart';
+import '../main.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,11 +26,14 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            /*
             CircleAvatar(
               radius: 50,
               backgroundImage:
                   NetworkImage(FirebaseAuthService().user.photoURL!),
             ),
+
+             */
             const SizedBox(
               height: 20,
             ),
@@ -62,7 +63,8 @@ class HomeScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Name: ${FirebaseAuthService().user.displayName}',
+                    //'Name: ${FirebaseAuthService().user.displayName}',
+                    'Name: ${LoginScreen.userData["first_name"]}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -73,7 +75,32 @@ class HomeScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Email: ${FirebaseAuthService().user.email}',
+                    //'Email: ${FirebaseAuthService().user.email}',
+                    'Username: ${LoginScreen.userData["username"]}',
+                    style: TextStyle(
+                      color: Colors.blue[900],
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    //'Email: ${FirebaseAuthService().user.email}',
+                    'Chat id: ${LoginScreen.userData["id"]}',
+                    style: TextStyle(
+                      color: Colors.blue[900],
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    //'Email: ${FirebaseAuthService().user.email}',
+                    'Session Hash: ${LoginScreen.userData["hash"]}',
                     style: TextStyle(
                       color: Colors.blue[900],
                       fontSize: 20,
@@ -91,7 +118,7 @@ class HomeScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                FirebaseAuthService().signOut();
+                MyApp.telegramStatus.value = Status.Disconnected;
               },
               child: Container(
                 height: 50,
